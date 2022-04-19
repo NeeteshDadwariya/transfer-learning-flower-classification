@@ -2,8 +2,7 @@ import pandas as pd
 import argparse
 import tensorflow as tf
 import numpy as np
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.mobilenet_v3 import preprocess_input, decode_predictions
+from tensorflow.keras.applications.mobilenet_v3 import preprocess_input
 
 
 # Note that you can save models in different formats. Some format needs to save/load model and weight separately.
@@ -20,7 +19,9 @@ def get_images_labels(df, classes, image_size):
     image_names = []
     test_labels = []
     for index, row in df.iterrows():
+        #Row[1] - denotes label
         label = row[1].strip()
+        #Row[1] - denotes file path
         image_names.append(row[0])
         img = tf.keras.utils.load_img(row[0], target_size=image_size)
         img_array = tf.keras.utils.img_to_array(img)
@@ -53,8 +54,6 @@ if __name__ == "__main__":
                'common daisy', 'coreopsis', 'dandelion', 'iris', 'rose', 'sunflower', 'tulip']
 
     IMG_SIZE = (224, 224)
-    #IMG_SIZE = (160, 160)
-    # Rewrite the code to match with your setup
     test_images, test_labels, image_names = get_images_labels(test_df, classes, IMG_SIZE)
 
     model = load_model_weights(model_name)
